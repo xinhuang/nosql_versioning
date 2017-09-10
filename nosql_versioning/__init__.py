@@ -1,6 +1,6 @@
 import json
 
-__version__ = '0.1'
+__version__ = '0.1.1'
 
 
 class VersionConflictionException(Exception):
@@ -25,12 +25,12 @@ def database():
 
         def record(jstr):
             jobj = json.loads(jstr)
-            n = jobj['__ver']
+            n = jobj['_ver']
             while n < latest:
                 cls = versions[n + 1]
                 cls.migrate(jobj)
                 n += 1
-            jobj['__ver'] = latest
+            jobj['_ver'] = latest
             return versions[latest](jobj)
 
         return version, record
