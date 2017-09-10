@@ -15,7 +15,7 @@ setup(
     author="Xin Huang",
     author_email="xinhuang.abc@gmail.com",
     url="https://github.com/xinhuang/nosql_versioning",
-    py_modules=['nosql_versioning'],
+    packages=['nosql_versioning', 'tests'],
     license="License :: OSI Approved :: MIT License",
     long_description=readme_string,
 )
