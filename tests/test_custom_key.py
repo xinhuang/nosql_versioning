@@ -3,7 +3,7 @@ from .context import database, VersionConflictionException
 import unittest
 
 
-class RecordTest(unittest.TestCase):
+class CustomKeyTest(unittest.TestCase):
     def test_only_default_record(self):
         version, Record = database(version=lambda o: o['__ver'])
 
