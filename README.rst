@@ -46,7 +46,7 @@ Quick Tutorial
   >>>         jobj['new_name'] = jobj['old_name']
   >>>         del jobj['old_name']
   >>>
-  >>> rec = Record('{"__ver": 0, "old_name": 1}')
+  >>> rec = Record('{"_ver": 0, "old_name": 1}')
 
 
 Licensing
