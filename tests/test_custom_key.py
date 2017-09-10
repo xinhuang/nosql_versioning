@@ -5,43 +5,43 @@ import unittest
 
 class RecordTest(unittest.TestCase):
     def test_only_default_record(self):
-        version, Record = database()
+        version, Record = database(version=lambda o: o['__ver'])
 
         @version()
         class Recordv0(object):
             def __init__(self, jobj):
                 self.value = jobj['value']
 
-        rec = Record('{"_ver": 0, "value": 1}')
+        rec = Record('{"__ver": 0, "value": 1}')
 
         self.assertEqual(1, rec.value)
 
     def test_2_records_from_different_db_doesnt_conflict(self):
-        version1, Record1 = database()
+        version1, Record1 = database(version=lambda o: o['__ver'])
 
         @version1()
         class Record1v0(object):
             def __init__(self, jobj):
                 self.value = jobj['value']
 
-        rec = Record1('{"_ver": 0, "value": 1}')
+        rec = Record1('{"__ver": 0, "value": 1}')
 
         self.assertEqual(1, rec.value)
 
-        version2, Record2 = database()
+        version2, Record2 = database(version=lambda o: o['__ver'])
 
         @version2()
         class Record2v0(object):
             def __init__(self, jobj):
                 self.value = jobj['value']
 
-        rec = Record2('{"_ver": 0, "value": 2}')
+        rec = Record2('{"__ver": 0, "value": 2}')
 
         self.assertEqual(2, rec.value)
 
     def test_raise_exception_if_a_version_specified_twice(self):
         def wrapper():
-            version, Record = database()
+            version, Record = database(version=lambda o: o['__ver'])
 
             @version()
             class Recordv0(object):
@@ -56,7 +56,7 @@ class RecordTest(unittest.TestCase):
         self.assertRaises(VersionConflictionException, wrapper)
 
     def test_record_should_migrate_from_0_to_1(self):
-        version, Record = database()
+        version, Record = database(version=lambda o: o['__ver'])
 
         @version()
         class Recordv0(object):
@@ -73,6 +73,6 @@ class RecordTest(unittest.TestCase):
                 jobj['new_name'] = jobj['old_name']
                 del jobj['old_name']
 
-        rec = Record('{"_ver": 0, "old_name": 1}')
+        rec = Record('{"__ver": 0, "old_name": 1}')
 
         self.assertEqual(1, rec.new_name)

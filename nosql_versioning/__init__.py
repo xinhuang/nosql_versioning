@@ -8,12 +8,15 @@ class VersionConflictionException(Exception):
         super().__init__('Version {} has already been specified'.format(n))
 
 
-def database():
+def database(version=None):
+    if version is None:
+        def version(o): return o['_ver']
+
     def instance():
         versions = {}
         latest = -1
 
-        def version(n=0):
+        def version_descriptor(n=0):
             def wrapper(cls):
                 if n in versions:
                     raise VersionConflictionException(n)
@@ -25,14 +28,13 @@ def database():
 
         def record(jstr):
             jobj = json.loads(jstr)
-            n = jobj['_ver']
+            n = version(jobj)
             while n < latest:
                 cls = versions[n + 1]
                 cls.migrate(jobj)
                 n += 1
-            jobj['_ver'] = latest
             return versions[latest](jobj)
 
-        return version, record
+        return version_descriptor, record
 
     return instance()
