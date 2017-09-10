@@ -1,5 +1,7 @@
 import json
 
+__version__ = '0.1'
+
 
 class VersionConflictionException(Exception):
     def __init__(self, n):
