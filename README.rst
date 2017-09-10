@@ -47,6 +47,7 @@ Quick Tutorial
   >>>         del jobj['old_name']
   >>>
   >>> rec = Record('{"_ver": 0, "old_name": 1}')
+  >>> print(rec.new_name)
 
 
 Licensing
