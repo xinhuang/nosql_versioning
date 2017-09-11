@@ -7,7 +7,7 @@ A Python library for NoSQL record versioning.
 Installation
 ============
 
-To install the latest release on `PyPi <https://pypi.python.org/pypi/nosql_versioning/0.1>`_,
+To install the latest release on `PyPi <https://pypi.python.org/pypi/nosql_versioning>`_,
 simply run:
 
 ::
