@@ -71,6 +71,10 @@ API Reference
     * ``version``: A class descriptor to specify record version.
     * ``Record``: A initializer that to construct defined Record class. Migrate if data is not the latest version.
 
+Migration from N-1 to N will use static method ``migrate`` in record class version N.
+
+In case there is no version specified, migration from N/A to 0 will use static method ``migrate`` in record class version 0.
+
 Licensing
 =========
 
