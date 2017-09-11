@@ -1,6 +1,6 @@
 import json
 
-__version__ = '0.1.5.1s'
+__version__ = '0.1.6'
 
 
 class VersionConflictionException(Exception):
