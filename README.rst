@@ -29,7 +29,7 @@ Quick Tutorial
 
   >>> from nosql_versioning import database
   >>>
-  >>> version, Record = database()
+  >>> version, Record = database(decode=json.loads)
   >>>
   >>> @version()
   >>> class Recordv0(object):
