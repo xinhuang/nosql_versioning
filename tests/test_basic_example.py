@@ -76,3 +76,27 @@ class RecordTest(unittest.TestCase):
         rec = Record('{"_ver": 0, "old_name": 1}')
 
         self.assertEqual(1, rec.new_name)
+
+    def test_record_should_instantiate_the_latest_version(self):
+        version, Record = database()
+
+        @version()
+        class Recordv0(object):
+            def __init__(self, jobj):
+                self.old_name = jobj['old_name']
+
+        @version(1)
+        class Recordv1(object):
+            def __init__(self, jobj=None, value=None):
+                if jobj:
+                    self.new_name = jobj['new_name']
+                else:
+                    self.new_name = value
+
+        rec = Record('{"_ver": 1, "new_name": 1}')
+
+        self.assertEqual(1, rec.new_name)
+
+        rec = Record(value=2)
+
+        self.assertEqual(2, rec.new_name)

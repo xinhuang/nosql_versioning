@@ -1,6 +1,6 @@
 import json
 
-__version__ = '0.1.4'
+__version__ = '0.1.5'
 
 
 class VersionConflictionException(Exception):
@@ -26,14 +26,22 @@ def database(version=None, decode=json.loads):
                 return cls
             return wrapper
 
-        def record(jstr):
-            jobj = decode(jstr)
-            n = version(jobj)
-            while n < latest:
-                cls = versions[n + 1]
-                cls.migrate(jobj)
-                n += 1
-            return versions[latest](jobj)
+        def record(*args, **kwargs):
+            data = None
+            if len(args) == 1 and len(kwargs) == 0:
+                data = args[0]
+            elif len(args) == 0 and len(kwargs) == 1 and 'data' in kwargs:
+                data = kwargs['data']
+            if data:
+                obj = decode(data)
+                n = version(obj)
+                while n < latest:
+                    cls = versions[n + 1]
+                    cls.migrate(obj)
+                    n += 1
+                return versions[latest](obj)
+            else:
+                return versions[latest](*args, **kwargs)
 
         return version_descriptor, record
 
