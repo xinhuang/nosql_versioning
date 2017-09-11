@@ -62,7 +62,7 @@ API Reference
 =============
 
 ``database(decode=None, version=None)``
-  Create a class descriptor to specify record classes of different version, and a Record initializer to instantiate the latest record from data, or migrate data to the latest version.
+  Create a class descriptor to specify record classes of different version, and a Record initializer to instantiate the latest record from data, or to migrate data to the latest version.
 
   :Args:
     * ``decode``: Deserialize objects retrieved from database. By default no decoding will be applied.
