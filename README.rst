@@ -61,7 +61,7 @@ Quick Tutorial
 API Reference
 =============
 
-``database(decode=None, version=None)``
+``database(decode=decode, version=get_version)``
   Create a class descriptor to specify record classes of different version, and a Record initializer to instantiate the latest record from data, or to migrate data to the latest version.
 
   :Args:
@@ -71,6 +71,22 @@ API Reference
   :Returns:
     * ``version``: A class descriptor to specify record version.
     * ``Record``: A initializer that to construct defined Record class. Migrate if data is not the latest version.
+
+``version(n=0)``
+  A class descriptor to specify record class of version N.
+
+  :Args:
+    * ``n``: Version. Must be a integer.
+
+  :Raises:
+    * ``VersionConflictionException``: When a version is defined twice.
+
+``Record(data=None, *args, **kwargs)``
+  The initializer to migrate record to latest and instantiate record class.
+
+  :Args:
+    * ``data``: If only this argument is specified, ``decode(data)`` will be used to instantiate the latest record class. (Migrate if needed.)
+    * ``args``, ``kwargs``: If not only ``data`` is specified, all arguments will be passed to instantiate the latest record class. No migration.
 
 Migration from N-1 to N will use static method ``migrate`` in record class version N.
 
