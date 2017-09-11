@@ -1,6 +1,4 @@
-import json
-
-__version__ = '0.1.6'
+__version__ = '0.1.7'
 
 
 class VersionConflictionException(Exception):
@@ -8,9 +6,12 @@ class VersionConflictionException(Exception):
         super().__init__('Version {} has already been specified'.format(n))
 
 
-def database(version=None, decode=json.loads):
+def database(version=None, decode=None):
     if version is None:
         def version(o): return o['_ver'] if '_ver' in o else None
+
+    if decode is None:
+        def decode(o): return o
 
     def instance():
         versions = {}

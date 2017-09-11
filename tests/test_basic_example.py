@@ -1,11 +1,12 @@
 from .context import database, VersionConflictionException
 
 import unittest
+import json
 
 
 class RecordTest(unittest.TestCase):
     def test_only_default_record(self):
-        version, Record = database()
+        version, Record = database(decode=json.loads)
 
         @version()
         class Recordv0(object):
@@ -17,7 +18,7 @@ class RecordTest(unittest.TestCase):
         self.assertEqual(1, rec.value)
 
     def test_2_records_from_different_db_doesnt_conflict(self):
-        version1, Record1 = database()
+        version1, Record1 = database(decode=json.loads)
 
         @version1()
         class Record1v0(object):
@@ -28,7 +29,7 @@ class RecordTest(unittest.TestCase):
 
         self.assertEqual(1, rec.value)
 
-        version2, Record2 = database()
+        version2, Record2 = database(decode=json.loads)
 
         @version2()
         class Record2v0(object):
@@ -41,7 +42,7 @@ class RecordTest(unittest.TestCase):
 
     def test_raise_exception_if_a_version_specified_twice(self):
         def wrapper():
-            version, Record = database()
+            version, Record = database(decode=json.loads)
 
             @version()
             class Recordv0(object):
@@ -56,7 +57,7 @@ class RecordTest(unittest.TestCase):
         self.assertRaises(VersionConflictionException, wrapper)
 
     def test_record_should_migrate_from_0_to_1(self):
-        version, Record = database()
+        version, Record = database(decode=json.loads)
 
         @version()
         class Recordv0(object):
@@ -78,7 +79,7 @@ class RecordTest(unittest.TestCase):
         self.assertEqual(1, rec.new_name)
 
     def test_record_should_instantiate_the_latest_version(self):
-        version, Record = database()
+        version, Record = database(decode=json.loads)
 
         @version()
         class Recordv0(object):
@@ -102,7 +103,7 @@ class RecordTest(unittest.TestCase):
         self.assertEqual(2, rec.new_name)
 
     def test_if_no_version_specified(self):
-        version, Record = database()
+        version, Record = database(decode=json.loads)
 
         @version()
         class Recordv0(object):
