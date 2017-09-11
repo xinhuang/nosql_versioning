@@ -8,7 +8,7 @@ class VersionConflictionException(Exception):
 
 def database(version=None, decode=None):
     if version is None:
-        def version(o): return o['_ver'] if '_ver' in o else None
+        def version(o): return o.get('_ver')
 
     if decode is None:
         def decode(o): return o
@@ -31,8 +31,8 @@ def database(version=None, decode=None):
             data = None
             if len(args) == 1 and len(kwargs) == 0:
                 data = args[0]
-            elif len(args) == 0 and len(kwargs) == 1 and 'data' in kwargs:
-                data = kwargs['data']
+            elif len(args) == 0 and len(kwargs) == 1:
+                data = kwargs.get('data')
             if data:
                 obj = decode(data)
                 n = version(obj)
