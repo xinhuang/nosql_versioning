@@ -6,13 +6,15 @@ class VersionConflictionException(Exception):
         super().__init__('Version {} has already been specified'.format(n))
 
 
-def database(version=None, decode=None):
-    if version is None:
-        def version(o): return o.get('_ver')
+def get_version(data):
+    return data.get('_ver')
 
-    if decode is None:
-        def decode(o): return o
 
+def decode(o):
+    return o
+
+
+def database(version=get_version, decode=decode):
     def instance():
         versions = {}
         latest = -1
