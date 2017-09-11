@@ -33,21 +33,28 @@ Quick Tutorial
   >>>
   >>> @version()
   >>> class Recordv0(object):
-  >>>     def __init__(self, jobj):
-  >>>         self.old_name = jobj['old_name']
+  >>>     def __init__(self, data):
+  >>>         self.old_name = data['old_name']
   >>>
   >>> @version(1)
   >>> class Recordv1(object):
-  >>>     def __init__(self, jobj):
-  >>>         self.new_name = jobj['new_name']
+  >>>     def __init__(self, data=None, value=None):
+  >>>         if data:
+  >>>             self.new_name = data['new_name']
+  >>>         else:
+  >>>             self.new_name = value
   >>>
   >>>     @staticmethod
-  >>>     def migrate(jobj):
-  >>>         jobj['new_name'] = jobj['old_name']
-  >>>         del jobj['old_name']
+  >>>     def migrate(data):
+  >>>         data['new_name'] = data['old_name']
+  >>>         del data['old_name']
   >>>
   >>> rec = Record('{"_ver": 0, "old_name": 1}')
   >>> print(rec.new_name)
+  1
+  >>> rec = Record(value=42)         # custom constructor can also be used
+  >>> print(rec.new_name)
+  42
 
 
 Licensing
