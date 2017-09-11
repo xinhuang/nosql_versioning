@@ -1,6 +1,6 @@
 import json
 
-__version__ = '0.1.5.1'
+__version__ = '0.1.5.1s'
 
 
 class VersionConflictionException(Exception):
@@ -10,7 +10,7 @@ class VersionConflictionException(Exception):
 
 def database(version=None, decode=json.loads):
     if version is None:
-        def version(o): return o['_ver']
+        def version(o): return o['_ver'] if '_ver' in o else None
 
     def instance():
         versions = {}
@@ -35,6 +35,9 @@ def database(version=None, decode=json.loads):
             if data:
                 obj = decode(data)
                 n = version(obj)
+                if n is None:
+                    versions[0].migrate(obj)
+                    n = 0
                 while n < latest:
                     cls = versions[n + 1]
                     cls.migrate(obj)

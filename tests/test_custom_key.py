@@ -76,3 +76,21 @@ class CustomKeyTest(unittest.TestCase):
         rec = Record('{"__ver": 0, "old_name": 1}')
 
         self.assertEqual(1, rec.new_name)
+
+    def test_if_no_version_specified(self):
+        version, Record = database(
+            version=lambda o: o['__ver'] if '__ver' in o else None)
+
+        @version()
+        class Recordv0(object):
+            def __init__(self, data):
+                self.value = data['value']
+
+            @staticmethod
+            def migrate(data):
+                data['__ver'] = 0
+                data['value'] = 42
+
+        rec = Record('{"value": 1}')
+
+        self.assertEqual(42, rec.value)
