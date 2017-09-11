@@ -73,7 +73,7 @@ API Reference
 
 Migration from N-1 to N will use static method ``migrate`` in record class version N.
 
-In case there is no version specified, migration from N/A to 0 will use static method ``migrate`` in record class version 0.
+In case there is no version specified, migration from None to 0 will use static method ``migrate`` in record class version 0.
 
 Licensing
 =========
