@@ -64,8 +64,12 @@ API Reference
 ``database(decode=None, version=None)``
 
   :Args:
-    * ``decode``: Optional function to deserialize objects retrieved from database.
+    * ``decode``: Deserialize objects retrieved from database. By default no decoding will be applied.
     * ``version``: Get version from record. By default it's ``data.get('_ver')``
+
+  :Returns:
+    * ``version``: A class descriptor to specify record version.
+    * ``Record``: A initializer that to construct defined Record class. Migrate if data is not the latest version.
 
 Licensing
 =========
