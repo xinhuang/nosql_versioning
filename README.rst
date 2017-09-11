@@ -58,6 +58,15 @@ Quick Tutorial
   42
 
 
+API Reference
+=============
+
+``database(decode=None, version=None)``
+
+  :Args:
+    * ``decode``: Optional function to deserialize objects retrieved from database.
+    * ``version``: Get version from record. By default it's ``data.get('_ver'])``
+
 Licensing
 =========
 
