@@ -1,6 +1,6 @@
-****
+****************
 NoSQL Versioning
-****
+****************
 
 A Python library for NoSQL record versioning.
 
