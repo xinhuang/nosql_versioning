@@ -88,9 +88,9 @@ API Reference
     * ``data``: If only this argument is specified, ``decode(data)`` will be used to instantiate the latest record class. (Migrate if needed.)
     * ``args``, ``kwargs``: If not only ``data`` is specified, all arguments will be passed to instantiate the latest record class. No migration.
 
-Migration from N-1 to N will use static method ``migrate`` in record class version N.
+Migration from Version N-1 to N will use static method ``migrate`` in record class version N.
 
-In case there is no version specified, migration from None to 0 will use static method ``migrate`` in record class version 0.
+In case there is no version specified, migration from None to 0 will use static method ``migrate`` in record class Version 0.
 
 Licensing
 =========
