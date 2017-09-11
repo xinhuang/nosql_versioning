@@ -28,6 +28,7 @@ Quick Tutorial
 .. code:: pycon
 
   >>> from nosql_versioning import database
+  >>> import json
   >>>
   >>> version, Record = database(decode=json.loads)
   >>>
