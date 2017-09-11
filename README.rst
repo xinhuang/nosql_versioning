@@ -65,7 +65,7 @@ API Reference
 
   :Args:
     * ``decode``: Optional function to deserialize objects retrieved from database.
-    * ``version``: Get version from record. By default it's ``data.get('_ver'])``
+    * ``version``: Get version from record. By default it's ``data.get('_ver')``
 
 Licensing
 =========
