@@ -128,7 +128,7 @@ class RecordTest(unittest.TestCase):
     def test_static_method(self):
         version, Record = schema(decode=json.loads)
 
-        @version(1)
+        @version(2)
         class Recordv1(object):
             def __init__(self, data):
                 self.value = data['value']
@@ -142,6 +142,10 @@ class RecordTest(unittest.TestCase):
             def foo():
                 return 42
 
+        @version(1)
+        class Recordv0(object):
+            pass
+        
         @version(0)
         class Recordv0(object):
             pass
