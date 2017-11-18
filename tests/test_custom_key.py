@@ -1,4 +1,4 @@
-from .context import database, VersionConflictionException
+from .context import schema, VersionConflictionException
 
 import unittest
 import json
@@ -6,7 +6,7 @@ import json
 
 class CustomKeyTest(unittest.TestCase):
     def test_only_default_record(self):
-        version, Record = database(version=lambda o: o['__ver'],
+        version, Record = schema(version=lambda o: o['__ver'],
                                    decode=json.loads)
 
         @version()
@@ -19,7 +19,7 @@ class CustomKeyTest(unittest.TestCase):
         self.assertEqual(1, rec.value)
 
     def test_2_records_from_different_db_doesnt_conflict(self):
-        version1, Record1 = database(version=lambda o: o['__ver'],
+        version1, Record1 = schema(version=lambda o: o['__ver'],
                                      decode=json.loads)
 
         @version1()
@@ -31,7 +31,7 @@ class CustomKeyTest(unittest.TestCase):
 
         self.assertEqual(1, rec.value)
 
-        version2, Record2 = database(version=lambda o: o['__ver'],
+        version2, Record2 = schema(version=lambda o: o['__ver'],
                                      decode=json.loads)
 
         @version2()
@@ -45,7 +45,7 @@ class CustomKeyTest(unittest.TestCase):
 
     def test_raise_exception_if_a_version_specified_twice(self):
         def wrapper():
-            version, Record = database(version=lambda o: o['__ver'],
+            version, Record = schema(version=lambda o: o['__ver'],
                                        decode=json.loads)
 
             @version()
@@ -61,7 +61,7 @@ class CustomKeyTest(unittest.TestCase):
         self.assertRaises(VersionConflictionException, wrapper)
 
     def test_record_should_migrate_from_0_to_1(self):
-        version, Record = database(version=lambda o: o['__ver'],
+        version, Record = schema(version=lambda o: o['__ver'],
                                    decode=json.loads)
 
         @version()
@@ -84,7 +84,7 @@ class CustomKeyTest(unittest.TestCase):
         self.assertEqual(1, rec.new_name)
 
     def test_if_no_version_specified(self):
-        version, Record = database(
+        version, Record = schema(
             version=lambda o: o['__ver'] if '__ver' in o else None,
             decode=json.loads)
 

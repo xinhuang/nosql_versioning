@@ -1,4 +1,4 @@
-from .context import database, VersionConflictionException
+from .context import schema, VersionConflictionException
 
 import unittest
 import json
@@ -14,7 +14,7 @@ def decode(jstr):
 
 class CustomDecodeTest(unittest.TestCase):
     def test_only_default_record(self):
-        version, Record = database(decode=decode)
+        version, Record = schema(decode=decode)
 
         @version()
         class Recordv0(object):
@@ -26,7 +26,7 @@ class CustomDecodeTest(unittest.TestCase):
         self.assertEqual(1, rec.value)
 
     def test_2_records_from_different_db_doesnt_conflict(self):
-        version1, Record1 = database(decode=decode)
+        version1, Record1 = schema(decode=decode)
 
         @version1()
         class Record1v0(object):
@@ -37,7 +37,7 @@ class CustomDecodeTest(unittest.TestCase):
 
         self.assertEqual(1, rec.value)
 
-        version2, Record2 = database(decode=decode)
+        version2, Record2 = schema(decode=decode)
 
         @version2()
         class Record2v0(object):
@@ -50,7 +50,7 @@ class CustomDecodeTest(unittest.TestCase):
 
     def test_raise_exception_if_a_version_specified_twice(self):
         def wrapper():
-            version, Record = database(decode=decode)
+            version, Record = schema(decode=decode)
 
             @version()
             class Recordv0(object):
@@ -65,7 +65,7 @@ class CustomDecodeTest(unittest.TestCase):
         self.assertRaises(VersionConflictionException, wrapper)
 
     def test_record_should_migrate_from_0_to_1(self):
-        version, Record = database(decode=decode)
+        version, Record = schema(decode=decode)
 
         @version()
         class Recordv0(object):
