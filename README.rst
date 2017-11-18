@@ -39,7 +39,7 @@ Quick Tutorial
   >>>
   >>> @version(1)
   >>> class Recordv1(object):
-  >>>     def __init__(self, data=None, value=None):
+  >>>     def __init__(self, value=None, *args, data=None):
   >>>         if data:
   >>>             self.new_name = data['new_name']
   >>>         else:

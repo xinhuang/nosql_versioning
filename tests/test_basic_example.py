@@ -10,8 +10,8 @@ class RecordTest(unittest.TestCase):
 
         @version()
         class Recordv0(object):
-            def __init__(self, jobj):
-                self.value = jobj['value']
+            def __init__(self, data):
+                self.value = data['value']
 
         rec = Record('{"_ver": 0, "value": 1}')
 
@@ -22,8 +22,8 @@ class RecordTest(unittest.TestCase):
 
         @version1()
         class Record1v0(object):
-            def __init__(self, jobj):
-                self.value = jobj['value']
+            def __init__(self, data):
+                self.value = data['value']
 
         rec = Record1('{"_ver": 0, "value": 1}')
 
@@ -33,8 +33,8 @@ class RecordTest(unittest.TestCase):
 
         @version2()
         class Record2v0(object):
-            def __init__(self, jobj):
-                self.value = jobj['value']
+            def __init__(self, data):
+                self.value = data['value']
 
         rec = Record2('{"_ver": 0, "value": 2}')
 
@@ -46,13 +46,13 @@ class RecordTest(unittest.TestCase):
 
             @version()
             class Recordv0(object):
-                def __init__(self, jobj):
-                    self.value = jobj['value']
+                def __init__(self, data):
+                    self.value = data['value']
 
             @version()
             class Recordv1(object):
-                def __init__(self, jobj):
-                    self.value = jobj['value']
+                def __init__(self, data):
+                    self.value = data['value']
 
         self.assertRaises(VersionConflictionException, wrapper)
 
@@ -61,22 +61,22 @@ class RecordTest(unittest.TestCase):
 
         @version(0)
         class Recordv0(object):
-            def __init__(self, jobj):
-                self.old_name = jobj['old_name']
+            def __init__(self, data):
+                self.old_name = data['old_name']
 
             @staticmethod
-            def migrate(jobj):
-                jobj['old_name'] = 42
+            def migrate(data):
+                data['old_name'] = 42
 
         @version(1)
         class Recordv1(object):
-            def __init__(self, jobj):
-                self.new_name = jobj['new_name']
+            def __init__(self, data):
+                self.new_name = data['new_name']
 
             @staticmethod
-            def migrate(jobj):
-                jobj['new_name'] = jobj['old_name']
-                del jobj['old_name']
+            def migrate(data):
+                data['new_name'] = data['old_name']
+                del data['old_name']
 
         recvna = Record('{"old_name": 1}')
         recv0 = Record('{"_ver": 0, "old_name": 1}')
@@ -89,14 +89,14 @@ class RecordTest(unittest.TestCase):
 
         @version()
         class Recordv0(object):
-            def __init__(self, jobj):
-                self.old_name = jobj['old_name']
+            def __init__(self, data):
+                self.old_name = data['old_name']
 
         @version(1)
         class Recordv1(object):
-            def __init__(self, jobj=None, value=None):
-                if jobj:
-                    self.new_name = jobj['new_name']
+            def __init__(self, value=None, *args, data=None):
+                if data:
+                    self.new_name = data['new_name']
                 else:
                     self.new_name = value
 

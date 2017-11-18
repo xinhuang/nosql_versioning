@@ -1,4 +1,4 @@
-__version__ = '0.1.8.2'
+__version__ = '0.1.8.3'
 
 
 class VersionConflictionException(Exception):
@@ -7,9 +7,7 @@ class VersionConflictionException(Exception):
 
 
 def get_version(data):
-    return data.get('_ver')
-
-
+    return data.get('_ver') 
 def decode(o):
     return o
 
@@ -65,7 +63,7 @@ def schema(version=get_version, decode=decode):
                     cls = versions[n + 1]
                     cls.migrate(obj)
                     n += 1
-                return versions[latest](obj)
+                return versions[latest](data=obj)
             else:
                 return versions[latest](*args, **kwargs)
 

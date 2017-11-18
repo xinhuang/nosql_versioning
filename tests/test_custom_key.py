@@ -11,8 +11,8 @@ class CustomKeyTest(unittest.TestCase):
 
         @version()
         class Recordv0(object):
-            def __init__(self, jobj):
-                self.value = jobj['value']
+            def __init__(self, data):
+                self.value = data['value']
 
         rec = Record('{"__ver": 0, "value": 1}')
 
@@ -24,8 +24,8 @@ class CustomKeyTest(unittest.TestCase):
 
         @version1()
         class Record1v0(object):
-            def __init__(self, jobj):
-                self.value = jobj['value']
+            def __init__(self, data):
+                self.value = data['value']
 
         rec = Record1('{"__ver": 0, "value": 1}')
 
@@ -36,8 +36,8 @@ class CustomKeyTest(unittest.TestCase):
 
         @version2()
         class Record2v0(object):
-            def __init__(self, jobj):
-                self.value = jobj['value']
+            def __init__(self, data):
+                self.value = data['value']
 
         rec = Record2('{"__ver": 0, "value": 2}')
 
@@ -50,13 +50,13 @@ class CustomKeyTest(unittest.TestCase):
 
             @version()
             class Recordv0(object):
-                def __init__(self, jobj):
-                    self.value = jobj['value']
+                def __init__(self, data):
+                    self.value = data['value']
 
             @version()
             class Recordv1(object):
-                def __init__(self, jobj):
-                    self.value = jobj['value']
+                def __init__(self, data):
+                    self.value = data['value']
 
         self.assertRaises(VersionConflictionException, wrapper)
 
@@ -66,18 +66,18 @@ class CustomKeyTest(unittest.TestCase):
 
         @version()
         class Recordv0(object):
-            def __init__(self, jobj):
-                self.old_name = jobj['old_name']
+            def __init__(self, data):
+                self.old_name = data['old_name']
 
         @version(1)
         class Recordv1(object):
-            def __init__(self, jobj):
-                self.new_name = jobj['new_name']
+            def __init__(self, data):
+                self.new_name = data['new_name']
 
             @staticmethod
-            def migrate(jobj):
-                jobj['new_name'] = jobj['old_name']
-                del jobj['old_name']
+            def migrate(data):
+                data['new_name'] = data['old_name']
+                del data['old_name']
 
         rec = Record('{"__ver": 0, "old_name": 1}')
 
