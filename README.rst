@@ -27,10 +27,10 @@ Quick Tutorial
 
 .. code:: pycon
 
-  >>> from nosql_versioning import database
+  >>> from nosql_versioning import schema
   >>> import json
   >>>
-  >>> version, Record = database(decode=json.loads)
+  >>> version, Record = schema(decode=json.loads)
   >>>
   >>> @version()
   >>> class Recordv0(object):
@@ -49,6 +49,10 @@ Quick Tutorial
   >>>     def migrate(data):
   >>>         data['new_name'] = data['old_name']
   >>>         del data['old_name']
+  >>>  
+  >>>     @staticmethod
+  >>>     def a_staticmethod(n):
+  >>>         print(n * 2)
   >>>
   >>> rec = Record('{"_ver": 0, "old_name": 1}')
   >>> print(rec.new_name)
@@ -56,12 +60,14 @@ Quick Tutorial
   >>> rec = Record(value=42)         # custom constructor can also be used
   >>> print(rec.new_name)
   42
+  >>> Record.a_staticmethod(42)      # static methods defined in the latest version can be used
+  84
 
 
 API Reference
 =============
 
-``database(decode=decode, version=get_version)``
+``schema(decode=decode, version=get_version)``
   Create a class descriptor to specify record classes of different version, and a Record initializer to instantiate the latest record from data, or to migrate data to the latest version.
 
   :Args:

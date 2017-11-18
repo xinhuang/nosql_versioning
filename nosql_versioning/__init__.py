@@ -1,4 +1,4 @@
-__version__ = '0.1.8.0'
+__version__ = '0.1.8.1'
 
 
 class VersionConflictionException(Exception):
@@ -30,7 +30,7 @@ def schema(version=get_version, decode=decode):
             for k, v in latest_ver.__dict__.items():
                 old = getattr(Record, k) if hasattr(Record, k) else None
                 if old is None and isinstance(v, staticmethod):
-                    setattr(Record, k, v)
+                    setattr(Record, k, v.__get__(latest_ver))
                     staticmethods['methods'].append(k)
 
         def unset_static_method():
@@ -49,29 +49,25 @@ def schema(version=get_version, decode=decode):
                 return cls
             return wrapper
 
-        class Record(object):
-            def __init__(self, *args, **kwargs):
-                data = None
-                if len(args) == 1 and len(kwargs) == 0:
-                    data = args[0]
-                elif len(args) == 0 and len(kwargs) == 1:
-                    data = kwargs.get('data')
-                if data:
-                    obj = decode(data)
-                    n = version(obj)
-                    if n is None:
-                        versions[0].migrate(obj)
-                        n = 0
-                    while n < latest:
-                        cls = versions[n + 1]
-                        cls.migrate(obj)
-                        n += 1
-                    self.obj = versions[latest](obj)
-                else:
-                    self.obj = versions[latest](*args, **kwargs)
-
-            def __getattr__(self, name):
-                return self.obj.__getattribute__(name)
+        def Record(*args, **kwargs):
+            data = None
+            if len(args) == 1 and len(kwargs) == 0:
+                data = args[0]
+            elif len(args) == 0 and len(kwargs) == 1:
+                data = kwargs.get('data')
+            if data:
+                obj = decode(data)
+                n = version(obj)
+                if n is None:
+                    versions[0].migrate(obj)
+                    n = 0
+                while n < latest:
+                    cls = versions[n + 1]
+                    cls.migrate(obj)
+                    n += 1
+                return versions[latest](obj)
+            else:
+                return versions[latest](*args, **kwargs)
 
         return version_descriptor, Record
 
